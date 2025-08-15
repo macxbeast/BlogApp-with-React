@@ -28,7 +28,7 @@ export class AuthService {
         }
     }
 
-    async login({email,password}){
+    async login({email,password}){      //check for errors in "createEmailSession"
         try{
             return await this.account.createEmailSession(email,password)
         }

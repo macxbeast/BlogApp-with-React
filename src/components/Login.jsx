@@ -11,8 +11,8 @@ function Login(){
     const dispatch = useDispatch()
     const {register,handleSubmit} = useForm()
     const [error, setError] = useState("")
-
-    const login = async (data)=>{
+                                                
+    const login = async (data)=>{        // data = {email: "john@example.com",password: "secret"}       
         setError("")
         try{
             const session = await authService.login(data)
@@ -43,13 +43,22 @@ function Login(){
                     <Link
                         to="/signup"
                         className="font-medium text-primary transition-all duration-200 hover:underline"
-                    >
-                        Sign Up
+                    > 
+                        Sign Up  
                     </Link>
         </p>
         {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
-        <form onSubmit={handleSubmit(login)} className="mt-8">
-            <div className="space-y-5">
+        
+        {/* you can think handleSubmit is a function in which login function is passed => In react-hook-form, it automatically:
+                Prevents the default browser submit
+                Reads all registered fields (those connected via register)
+                Runs all validation rules you defined in register
+                After all that,
+                    Creates a plain JavaScript object with key–value pairs,where the key is the field name and value is the field’s current value.
+                    Passes that object as the data argument to your onSubmit callback. */}
+        
+        <form onSubmit={handleSubmit(login)} className="mt-8">    
+            <div className="space-y-5"> 
                 <Input 
                 label="Email :"
                 placeholder="Enter your email"
@@ -60,14 +69,14 @@ function Login(){
                         matchPattern: (value)=> /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
                         "Email address must be a valid address",
                     }
-                })}
-                />
-                <Input 
-                label="Password :"
-                type="password"
-                placeholder="Enter your password"
-                {...register("Password",{
-                    required:true
+                })}                                    // The same thing using normal useRef
+                />                                     {/* But, you have to initialize => const passwordRef = useRef(null); above return */}                         
+                <Input                                 //<Input
+                label="Password :"                     //ref={passwordRef}
+                type="password"                        //label="Password :"
+                placeholder="Enter your password"      //type="password"
+                {...register("Password",{              //placeholder="Enter your password"/>
+                    required:true                      
                 })}
                 />
                 <Button

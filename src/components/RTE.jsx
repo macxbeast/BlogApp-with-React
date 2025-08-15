@@ -8,8 +8,12 @@ export default function RTE({
     return (
         <div className='w-full'>
             {label && <label className='inline-block mb-1 pl-1'>{label}</label>}
-            
-            <Controller 
+                              {/* why are we using controller:
+                              react-hook-form normally works directly with native inputs (<input>, <textarea>, <select>) via ref and register.
+                              But TinyMCE's Editor is not a native input(third party) — it:
+                                Doesn’t accept a ref in a way react-hook-form expects.
+                                Uses its own onEditorChange event instead of the usual onChange */}
+            <Controller       // Baseline is we are doing the same thing what we do in forward ref, but with different syntax
             name={name || 'content'}
             control={control}
             render = {({field: {onChange}})=>(
@@ -25,7 +29,6 @@ export default function RTE({
                         "autolink",
                         "lists",
                         "link",
-                        "image",
                         "charmap",
                         "preview",
                         "anchor",
