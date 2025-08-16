@@ -11,7 +11,7 @@ function SignUp(){
     const dispatch=useDispatch()
     const [error,setError]=useState("")
     const {register, handleSubmit}=useForm()
-
+                                    //data={name:"", email:"", password:""}
     const create = async(data)=>{
         const userData = await authService.createAccount(data)
         if(userData){
@@ -53,7 +53,7 @@ function SignUp(){
                         label="Email :"
                         placeholder="Enter your email"
                         type="email"
-                        {...register("Email",{
+                        {...register("email",{
                             required:true,
                             validate:{
                                 matchPattern: (value)=> /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
@@ -65,7 +65,7 @@ function SignUp(){
                         label="Password :"
                         type="password"
                         placeholder="Enter your password"
-                        {...register("Password",{
+                        {...register("password",{
                             required:true
                         })}
                         />

@@ -63,7 +63,7 @@ function Login(){
                 label="Email :"
                 placeholder="Enter your email"
                 type="email"
-                {...register("Email",{
+                {...register("email",{
                     required:true,
                     validate:{
                         matchPattern: (value)=> /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
@@ -75,7 +75,7 @@ function Login(){
                 label="Password :"                     //ref={passwordRef}
                 type="password"                        //label="Password :"
                 placeholder="Enter your password"      //type="password"
-                {...register("Password",{              //placeholder="Enter your password"/>
+                {...register("password",{              //placeholder="Enter your password"/>
                     required:true                      
                 })}
                 />
