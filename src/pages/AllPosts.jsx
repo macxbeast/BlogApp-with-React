@@ -4,16 +4,21 @@ import { PostCard, Container } from "../components";
 
 function AllPosts(){
     const [posts,setPosts] = useState([])
+    const [loading,setLoading] = useState(true)
     useEffect(()=>{
+        setLoading(true)
         appwriteService.getPosts([]).then((posts)=>{
-        if(posts){
-            setPosts(posts.documents)
-        }
-    })
+            if(posts){
+                setPosts(posts.documents)
+            }
+        })
+        .finally(()=>setLoading(false))
     },[])
 
-    
-    if(posts.length===0){
+    if(loading){
+        return(<h1>Loading...</h1>)
+    }
+    else if(posts.length===0){
         return(
             <Container>
                 <div className="flex flex-wrap">
@@ -33,7 +38,15 @@ function AllPosts(){
                 <div className="flex flex-wrap">
                     {posts.map((post)=>(
                         <div key={post.$id} className="p-2 w-1/4">
-                            <PostCard post={post}/>
+                            {/* React always passes props as a single object to your component function.
+                                So under the hood, when you write: <PostCard $id="123" title="My Blog" featuredImage="abc.png" />
+                                React is really calling: PostCard({ $id: "123", title: "My Blog", featuredImage: "abc.png" })
+                                That means your component will always receive one argument: props (an object).
+                                => And, when you destructure in original componet, you will get what you need */}
+                            
+                            {/* <PostCard post={post}/>  => This will not work , it will store, PostCard({{post}}) */}
+                            {/* <PostCard {...post}/>  => It will work, it will store, PostCard({post}) */}
+                            <PostCard {...post}/>
                         </div>
                     ))}
                 </div>

@@ -16,7 +16,7 @@ import Login from './pages/Login.jsx'
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/',          // '/' is parent element, renders the <App> element first, then the children like <Home> or <Login>
     element: <App />,
     children:[
       {
@@ -43,7 +43,6 @@ const router = createBrowserRouter([
         path:'/all-posts',
         element:(
           <AuthLayout authentication={true}>
-            {" "}
             <AllPosts/>
           </AuthLayout>
         )
@@ -52,7 +51,6 @@ const router = createBrowserRouter([
         path: '/add-post',
         element:(
           <AuthLayout authentication>
-            {" "}
             <AddPost/>
           </AuthLayout>
         )
@@ -61,7 +59,6 @@ const router = createBrowserRouter([
         path: '/edit-post/:slug',
         element:(
           <AuthLayout authentication>
-            {" "}
             <EditPost/>
           </AuthLayout>
         )
@@ -81,3 +78,7 @@ createRoot(document.getElementById('root')).render(
     </Provider>
   </StrictMode>,
 )
+
+//Provider => is like a wrapper,that makes your Redux store available to all components in the app. It’s like putting the store in React’s context so that any child can “reach” it.
+//Store => holds the entire store, you create
+//RouterProvider => It takes a router object (created with createBrowserRouter) and provides it to your whole app. Enables navigation when user clicks links (<Link to="/all-posts">).

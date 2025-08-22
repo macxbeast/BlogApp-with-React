@@ -17,6 +17,7 @@ export default function RTE({
             <Controller       // Baseline is we are doing the same thing what we do in forward ref, but with different syntax
             name={name || 'content'}
             control={control}
+            rules={{required: "Content is required"}}
             render = {({field: {onChange}})=>(
                 <Editor
                     apiKey={conf.tinymceApiKey}

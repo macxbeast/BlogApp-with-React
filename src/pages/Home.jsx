@@ -2,20 +2,36 @@ import { useState, useEffect } from "react";
 import appwriteService from "../appwrite/config";
 import { Container, PostCard } from "../components";
 import { useSelector } from "react-redux";
+import { Query } from "appwrite";
 
 function Home(){
+    const [loading, setLoading] = useState(true)
     const [posts,setPosts] = useState([])
     const islogin = useSelector((state)=>state.auth.status)
-
+    const userData = useSelector((state)=>state.auth.userData)
+    //console.log(posts)
     useEffect(()=>{
-        appwriteService.getPosts().then((posts)=>{
-            if(posts){
-                setPosts(posts.documents)
-            }
-        })
-    },[])
+        setLoading(true)
+                                //[Query.equal("userId",userData.$id)]
+        if(islogin && userData?.$id){
+            appwriteService.getPosts([Query.equal("userId",userData.$id)])
+            .then((posts)=>{
+                if(posts){
+                    setPosts(posts.documents)
+                }
+            })
+            .finally(()=>setLoading(false))
+        }
+        else{
+            setPosts([])
+            setLoading(false)
+        }
+    },[userData,islogin])
 
-    if(posts.length===0){
+    if(loading){
+        return(<h1>Loading...</h1>)
+    }
+    else if(posts.length===0){
         return (
             <Container>
                 <div className="flex flex-wrap">
@@ -28,6 +44,7 @@ function Home(){
             </Container>
         )
     }
+    
     return(
         <div className="w-full py-8">
             <Container>

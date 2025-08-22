@@ -31,6 +31,7 @@ export class Service{
         }
         catch(error){
             console.log("Appwrite service :: createPost :: error",error)
+            throw error
         }
     }
 
@@ -50,6 +51,7 @@ export class Service{
         }
         catch(error){
             console.log("Appwrite service :: updatePost :: error",error)
+            throw error
         }
     }
 
@@ -82,7 +84,7 @@ export class Service{
         }
     }
 
-    async getPosts(queries = [Query.equal("status","active")]){
+    async getPosts(queries = [Query.equal("status",'active')]){
         try{
             return await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
@@ -127,7 +129,7 @@ export class Service{
 
     //It will not return a promise, you can check(see) in the documentation of appwrite
     getFilePreview(fileId){
-        return this.bucket.getFilePreview(
+        return this.bucket.getFileView(
             conf.appwriteBucketId,
             fileId
         )

@@ -18,12 +18,13 @@ function Login(){
             const session = await authService.login(data)
             if(session){
                 const userData = await authService.getCurrentUser()
+            
                 if(userData) dispatch(authLogin(userData))    //it expects userData is an object, like, userData = {userData:{data of user}}, as authSlice-login is designed in that way only
                 navigate('/')
             }
         }
         catch(error){
-            setError(error.message)
+            setError("Invalid Credentials.")
         }
     }
 

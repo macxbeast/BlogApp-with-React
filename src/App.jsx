@@ -10,11 +10,12 @@ function App() {
   const [loading, setLoading]=useState(true)
   const dispatch = useDispatch()
 
-  useEffect(()=>{
-    authService.getCurrentUser()
-    .then((userData)=>{
+  useEffect(()=>{                     //useEffect always runs after render.
+                                      //Whether it “takes time” noticeable to the user depends on what you put inside — if it’s a network call, yes, you’ll see the loading state.
+    authService.getCurrentUser(false)      
+    .then((userData)=>{               //So, initially App renders loading as true, but after useEffect is complete, it renders again with loading as false.
       if(userData){
-        dispatch(login({userData: userData}))
+        dispatch(login(userData))
       }
       else{
         dispatch(logout())
@@ -27,7 +28,10 @@ function App() {
     <div className='min-h-screen flex flex-wrap content-between bg-gray-400'>
       <div className='w-full block'>
         <Header/>
-        <main>
+            {/* <main> is an HTML5 semantic tag
+            It represents the main content area of a webpage, the stuff that’s central and unique to that page.
+            Screen readers, SEO engines, and accessibility tools recognize <main> as “the important part of the page.” */}
+        <main>              
           <Outlet />
         </main>
         <Footer/>

@@ -24,7 +24,7 @@ export class AuthService {
             }
         }
         catch(error){
-            console.log(`Error in creating account : `,error);
+            throw error
         }
     }
 
@@ -37,15 +37,17 @@ export class AuthService {
         }
     }
 
-    async getCurrentUser(){
+    async getCurrentUser(showerr= true){
         try{
             return await this.account.get();
         }
         catch(error){
-            console.log("Appwrite service :: getCurrentUser :: error",error)
+            if(showerr || error.code !== 401){
+                console.log("Appwrite service :: getCurrentUser :: error : ",error)
+            }
         }
-
         return null
+
     }
 
     async logout(){
