@@ -1,4 +1,4 @@
-import React , {useCallback, useState} from 'react'
+import React , {useCallback} from 'react'
 import { useForm } from 'react-hook-form'
 import {Button, Input, Select, RTE} from '../index'
 import service from '../../appwrite/config'
@@ -10,14 +10,14 @@ function PostForm({post}){
     const {register,handleSubmit, watch, setValue, control, getValues, formState:{errors}} = useForm({
         defaultValues:{
             title: post?.title || '',
-            slug: post?.slug || '',
+            slug: post?.$id || '',
             content: post?.content || '',
             status: post?.status || 'active'
         }
     })
     const navigate = useNavigate()
     const userData = useSelector(state => state.auth.userData) //check for error
-    
+
     
     const submit = async (data)=>{   //data={title: 'df', slug: 'df', content: '<p>gs</p>', status: 'active', image: FileList}
         
@@ -171,7 +171,7 @@ function PostForm({post}){
                         )}
                         <Select
                             options={["active", "inactive"]}
-                            label="Status"
+                            label="Status :"
                             className="mb-4"
                             {...register("status", { required: true })}
                         />
