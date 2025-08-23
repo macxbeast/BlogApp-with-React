@@ -1,4 +1,4 @@
-import React , {useCallback} from 'react'
+import React , {useCallback, useState} from 'react'
 import { useForm } from 'react-hook-form'
 import {Button, Input, Select, RTE} from '../index'
 import service from '../../appwrite/config'
@@ -17,10 +17,11 @@ function PostForm({post}){
     })
     const navigate = useNavigate()
     const userData = useSelector(state => state.auth.userData) //check for error
+    const [error,setError] = useState("")
 
     
     const submit = async (data)=>{   //data={title: 'df', slug: 'df', content: '<p>gs</p>', status: 'active', image: FileList}
-        
+        setError("")
         try{
             if(post){
                 const file = data.image?.[0] ? await service.fileUpload(data.image[0]) : null   //check for error
@@ -53,6 +54,7 @@ function PostForm({post}){
             }
         }
         catch(error){
+            if(error.code===409) setError("Post with the slug is already created. Use different slug value")
             console.log("Error while submitting post : ",error)
         }
     }
@@ -108,8 +110,15 @@ function PostForm({post}){
 
     
     return (
+        <div>
+            {error && 
+                <div className="w-full flex justify-center">
+                    <p className="text-red-600 mt-1 mb-3 text-center">{error}</p>
+                </div>
+            }
+        
         <div className='flex items-center justify-center w-full'>
-            
+                
 
                 <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
                     <div className="w-2/3 px-2">
@@ -131,7 +140,6 @@ function PostForm({post}){
                             onInput={(e) => {
                                 setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
                             }}
-                            readOnly= {post}
                         />
                         {errors.slug && <p className="text-red-700 text-sm">{errors.slug.message}</p>}
 
@@ -182,6 +190,7 @@ function PostForm({post}){
                     </div>
                 </form>
             
+        </div>
         </div>
     )
 }
